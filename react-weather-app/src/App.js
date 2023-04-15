@@ -1,11 +1,11 @@
 import React from 'react';
+import "./styles.css";
+import UI from './UI';
 
 function App() {
   return (
-    <div style={{ textAlign: 'center' }}>
-      <header>
-        Weather App
-      </header>
+    <div className='app'>
+      <UI />
     </div>
   );
 }

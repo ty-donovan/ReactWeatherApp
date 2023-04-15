@@ -1,0 +1,26 @@
+body {
+    background-color: #fffff0;
+}
+
+.app {
+    text-align: center;
+}
+
+.navbar-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.navbar {
+    background-color: white;
+    width: 20%;
+}
+
+.ui {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    background-color: #ffeedb;
+    border-radius: 60px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
