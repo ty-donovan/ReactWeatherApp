@@ -10,7 +10,8 @@ import AirIcon from '@mui/icons-material/Air';
 import Brightness4Icon from '@mui/icons-material/Brightness4'; // partly cloudy
 
 export default function WeatherUI( zip ) {
-
+    const API_KEY = process.env.OPEN_WEATHER_api_key;
+    const URL = `https://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${API_KEY}}`;
 
     return (
         <div className='ui'>
