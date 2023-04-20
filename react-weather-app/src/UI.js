@@ -7,7 +7,7 @@ import { TextField, Button } from '@material-ui/core';
 import { useState } from 'react';
 
 export default function UI() {
-    const [zipCode, setZipCode] = useState(''); // zip code
+    const [zipCode, setZipCode] = useState('22903'); // zip code
     const [hiddenZip, setHiddenZip] = useState(''); // hidden zip code
     const [error, setError] = useState(""); // error
 
