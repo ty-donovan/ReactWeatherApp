@@ -3,13 +3,14 @@ import { Grid } from '@material-ui/core';
 import './styles.css';
 import { WiCloudyGusts, WiDaySnow, WiCloudy, WiDayCloudy, WiDaySunny, WiDaySunnyOvercast, WiDayShowers, WiDayRain, WiDayThunderstorm, WiDayFog } from 'weather-icons-react';
 
-export default function WeatherUI( zip ) {
-    const API_KEY = process.env.OPEN_WEATHER_api_key;
+export default function WeatherUI({ zip }) {
+    const API_KEY = process.env.REACT_APP_OPEN_WEATHER_api_key;
     const [location, setLocation] = useState({ name: "Charlottesville, VA", lat: 38.0339, long: -78.4924 }); // location [city, state
+    console.log(API_KEY, zip)
     // weather const { id, main, feels_like, temp }
     const [weather, setWeather] = useState({ id: 0, main: "", feels_like: 0, temp: 0 });
-    const LOCATIONURL = `https://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${API_KEY}}`;
-    const WEATHERURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.long}&units=metric&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
+    const LOCATIONURL = `https://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${API_KEY}`;
+    const WEATHERURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&units=metric&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
 
     useEffect(() => {
         fetch(LOCATIONURL)
@@ -18,7 +19,7 @@ export default function WeatherUI( zip ) {
                 setLocation({ name: data.name, lat: parseFloat(data.lat), long: parseFloat(data.lon) });
             })
             .catch(err => console.log("error fetching data from API: ", err));
-    }, [zip]);
+    }, [zip, LOCATIONURL]);
 
     useEffect(() => {
         fetch(WEATHERURL)
@@ -31,7 +32,7 @@ export default function WeatherUI( zip ) {
                 setWeather({ id, main, feels_like, temp });
             })
             .catch(err => console.log("error fetching data from API: ", err));
-    }, [location]);
+    }, [location, WEATHERURL]);
 
     return (
         <div className='ui'>
