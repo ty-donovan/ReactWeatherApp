@@ -5,7 +5,6 @@ import WeatherUI from './weatherUI';
 import NewsUI from './newsUI';
 import { TextField, Button } from '@material-ui/core';
 import { useState } from 'react';
-import { BorderColor } from '@mui/icons-material';
 
 export default function UI() {
     const [zipCode, setZipCode] = useState('22903'); // zip code
