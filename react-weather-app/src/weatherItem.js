@@ -5,7 +5,7 @@ import { WiCloudyGusts, WiDaySnow, WiCloudy, WiDaySunny, WiDayShowers, WiDayRain
 import { useState } from "react";
 
 export default function WeatherItem({ key, id, temp, main }) {
-
+    const ICONCOLOR = "#fefae0";
 
     const getIconFromWeatherId = (weatherId) => {
         if (weatherId === undefined) {
@@ -14,23 +14,23 @@ export default function WeatherItem({ key, id, temp, main }) {
             let currentCondition = weatherId.toString().charAt(0);
         switch (currentCondition) {
             case '2':
-                return <WiDayThunderstorm size={80} color='#000' />;
+                return <WiDayThunderstorm size={80} color={ICONCOLOR} />;
             case '3':
-                return <WiDayShowers size={80} color='#000' />;
+                return <WiDayShowers size={80} color={ICONCOLOR} />;
             case '5':
-                return <WiDayRain size={80} color='#000' />;
+                return <WiDayRain size={80} color={ICONCOLOR} />;
             case '6':
-                return <WiDaySnow size={80} color='#000' />;
+                return <WiDaySnow size={80} color={ICONCOLOR} />;
             case '7':
-                return <WiCloudyGusts size={80} color='#000' />;
+                return <WiCloudyGusts size={80} color={ICONCOLOR} />;
             case '8':
                 if (weatherId === 800) {
-                    return <WiDaySunny size={80} color='#000' />;
+                    return <WiDaySunny size={80} color={ICONCOLOR} />;
                 } else {
-                    return <WiCloudy size={80} color='#000' />;
+                    return <WiCloudy size={80} color={ICONCOLOR} />;
                 }
             default:
-                return <WiDaySunny size={80} color='#000' />;
+                return <WiDaySunny size={80} color={ICONCOLOR} />;
             }
         };
     }

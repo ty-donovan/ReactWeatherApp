@@ -8,7 +8,6 @@ export default function WeatherUI({ zip }) {
     const API_KEY = process.env.REACT_APP_OPEN_WEATHER_api_key;
     const [location, setLocation] = useState({ name: "Charlottesville", lat: "38.0339", lon: "-78.4924" }); // location [city, state
     // console.log(API_KEY, zip)
-    const [displayCondition, setDisplayCondition] = useState(WiDaySunny); // displayed condition [icon]
     // weather const { id, main, feels_like, temp }
     // console.log(location.lon)
     const [weatherFiveDay, setWeatherFiveDay] = useState([]);
@@ -16,11 +15,14 @@ export default function WeatherUI({ zip }) {
     const LOCATIONURL = `https://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${API_KEY}`;
     const WEATHERURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`;
 
+    const ICONCOLOR = "#fefae0";
+
     useEffect(() => {
         fetch(WEATHERURL)
             .then(res => res.json())
             .then(data => setWeatherFiveDay(data.list))
             .catch(err => console.log("error fetching data from API: ", err));
+        console.log(weatherFiveDay);
     }, [zip, WEATHERURL]);
 
     useEffect(() => {
@@ -32,43 +34,47 @@ export default function WeatherUI({ zip }) {
             .catch(err => console.log("error fetching data from API: ", err));
     }, [zip, LOCATIONURL]);
 
-    // useEffect(() => {
-    //     fetch(WEATHERURL)
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             const temp = data.current.temp;
-    //             const feels_like = data.current.feels_like;
-    //             const main = data.current.weather[0].main;
-    //             const id = data.current.weather[0].id;
-    //             setWeather({ id, main, feels_like, temp });
-    //         })
-    //         .catch(err => console.log("error fetching data from API: ", err));
-    //         // console.log(currentCondition);
-    // }, [location, WEATHERURL]);
-
     const getIconFromWeatherId = (weatherId) => {
         let currentCondition = weatherId.toString().charAt(0);
         switch (currentCondition) {
             case '2':
-                return <WiDayThunderstorm size={150} color='#000' />;
+                return <WiDayThunderstorm size={150} color={ICONCOLOR} />;
             case '3':
-                return <WiDayShowers size={150} color='#000' />;
+                return <WiDayShowers size={150} color={ICONCOLOR} />;
             case '5':
-                return <WiDayRain size={150} color='#000' />;
+                return <WiDayRain size={150} color={ICONCOLOR} />;
             case '6':
-                return <WiDaySnow size={150} color='#000' />;
+                return <WiDaySnow size={150} color={ICONCOLOR} />;
             case '7':
-                return <WiCloudyGusts size={150} color='#000' />;
+                return <WiCloudyGusts size={150} color={ICONCOLOR} />;
             case '8':
                 if (weatherId === 800) {
-                    return <WiDaySunny size={150} color='#000' />;
+                    return <WiDaySunny size={150} color={ICONCOLOR} />;
                 } else {
-                    return <WiCloudy size={150} color='#000' />;
+                    return <WiCloudy size={150} color={ICONCOLOR} />;
                 }
             default:
-                return <WiDaySunny size={150} color='#000' />;
+                return <WiDaySunny size={150} color={ICONCOLOR} />;
         }
     };
+
+    const verifyWeatherData = (i) => {
+        if (weatherFiveDay[i] === undefined) {
+            return ({
+                id : 800,
+                temp : 0,
+                main : "Sunny",
+                feels_like: 0
+            });
+        } else {
+            return ({
+                id : weatherFiveDay[i].weather[0].id,
+                temp : weatherFiveDay[i].main.temp,
+                main : weatherFiveDay[i].weather[0].main,
+                feels_like : weatherFiveDay[i].main.feels_like
+            });
+        }
+    }
 
     return (
         <div className='ui'>
@@ -80,30 +86,30 @@ export default function WeatherUI({ zip }) {
                     <Grid container spacing={2}>
                     <Grid item xs={2}></Grid>
                         <Grid item xs={3}>
-                            {getIconFromWeatherId(weatherFiveDay[0].weather[0].id)}
+                            {getIconFromWeatherId(verifyWeatherData(0).id)}
                         </Grid>
                         <Grid item xs={6}>
-                            <h2>{weatherFiveDay[0].weather[0].main}</h2>
-                            <h2>Current Temperature: {weatherFiveDay[0].main.temp}°C</h2>
-                            <h2>Feels like: {weatherFiveDay[0].main.feels_like}°C</h2>
+                            <h2>{verifyWeatherData(0).main}</h2>
+                            <h2>Current Temperature: {verifyWeatherData(0).temp}°C</h2>
+                            <h2>Feels like: {verifyWeatherData(0).feels_like}°C</h2>
                         </Grid>
                         <Grid item xs={1}></Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="1" id={weatherFiveDay[1].weather[0].id} temp={weatherFiveDay[1].main.temp} main={weatherFiveDay[1].weather[0].main}/>
+                    <WeatherItem key="1" id={verifyWeatherData(1).id} temp={verifyWeatherData(1).temp} main={verifyWeatherData(1).main}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="2" id={weatherFiveDay[2].weather[0].id} temp={weatherFiveDay[2].main.temp} main={weatherFiveDay[2].weather[0].main}/>
+                    <WeatherItem key="2" id={verifyWeatherData(2).id} temp={verifyWeatherData(2).temp} main={verifyWeatherData(2).main}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="3" id={weatherFiveDay[3].weather[0].id} temp={weatherFiveDay[3].main.temp} main={weatherFiveDay[3].weather[0].main}/>
+                    <WeatherItem key="3" id={verifyWeatherData(3).id} temp={verifyWeatherData(3).temp} main={verifyWeatherData(3).main}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="4" id={weatherFiveDay[4].weather[0].id} temp={weatherFiveDay[4].main.temp} main={weatherFiveDay[4].weather[0].main}/>
+                    <WeatherItem key="4" id={verifyWeatherData(4).id} temp={verifyWeatherData(4).temp} main={verifyWeatherData(4).main}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="5" id={weatherFiveDay[5].weather[0].id} temp={weatherFiveDay[5].main.temp} main={weatherFiveDay[5].weather[0].main}/>
+                    <WeatherItem key="5" id={verifyWeatherData(5).id} temp={verifyWeatherData(5).temp} main={verifyWeatherData(5).main}/>
                 </Grid>
             </Grid>
         </div>

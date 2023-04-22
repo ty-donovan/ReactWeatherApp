@@ -1,5 +1,5 @@
 body {
-    background-color: #fffff0;
+    background-color: #ccd5ae; 
 }
 
 .app {
@@ -20,7 +20,8 @@ body {
     margin: 20px;
     display: flex;
     justify-content: center;
-    background-color: #ffeedb;
+    background-color: #d4a373;
+    color: #FEFAE0;
     border-radius: 60px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
