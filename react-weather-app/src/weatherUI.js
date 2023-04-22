@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import './styles.css';
 import { WiCloudyGusts, WiDaySnow, WiCloudy, WiDaySunny, WiDayShowers, WiDayRain, WiDayThunderstorm } from 'weather-icons-react';
+import WeatherItem from './weatherItem';
 
 export default function WeatherUI({ zip }) {
     const API_KEY = process.env.REACT_APP_OPEN_WEATHER_api_key;
@@ -10,9 +11,17 @@ export default function WeatherUI({ zip }) {
     const [displayCondition, setDisplayCondition] = useState(WiDaySunny); // displayed condition [icon]
     // weather const { id, main, feels_like, temp }
     // console.log(location.lon)
-    const [weather, setWeather] = useState({ id: 800, main: "", feels_like: 0, temp: 0 });
+    const [weatherFiveDay, setWeatherFiveDay] = useState([]);
+    // const [weather, setWeather] = useState({ id: 800, main: "", feels_like: 0, temp: 0 });
     const LOCATIONURL = `https://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${API_KEY}`;
-    const WEATHERURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&units=metric&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
+    const WEATHERURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`;
+
+    useEffect(() => {
+        fetch(WEATHERURL)
+            .then(res => res.json())
+            .then(data => setWeatherFiveDay(data.list))
+            .catch(err => console.log("error fetching data from API: ", err));
+    }, [zip, WEATHERURL]);
 
     useEffect(() => {
         fetch(LOCATIONURL)
@@ -23,19 +32,19 @@ export default function WeatherUI({ zip }) {
             .catch(err => console.log("error fetching data from API: ", err));
     }, [zip, LOCATIONURL]);
 
-    useEffect(() => {
-        fetch(WEATHERURL)
-            .then(res => res.json())
-            .then(data => {
-                const temp = data.current.temp;
-                const feels_like = data.current.feels_like;
-                const main = data.current.weather[0].main;
-                const id = data.current.weather[0].id;
-                setWeather({ id, main, feels_like, temp });
-            })
-            .catch(err => console.log("error fetching data from API: ", err));
-            // console.log(currentCondition);
-    }, [location, WEATHERURL]);
+    // useEffect(() => {
+    //     fetch(WEATHERURL)
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             const temp = data.current.temp;
+    //             const feels_like = data.current.feels_like;
+    //             const main = data.current.weather[0].main;
+    //             const id = data.current.weather[0].id;
+    //             setWeather({ id, main, feels_like, temp });
+    //         })
+    //         .catch(err => console.log("error fetching data from API: ", err));
+    //         // console.log(currentCondition);
+    // }, [location, WEATHERURL]);
 
     const getIconFromWeatherId = (weatherId) => {
         let currentCondition = weatherId.toString().charAt(0);
@@ -71,30 +80,30 @@ export default function WeatherUI({ zip }) {
                     <Grid container spacing={2}>
                     <Grid item xs={2}></Grid>
                         <Grid item xs={3}>
-                            {getIconFromWeatherId(weather.id)}
+                            {getIconFromWeatherId(weatherFiveDay[0].weather[0].id)}
                         </Grid>
                         <Grid item xs={6}>
-                            <h2>{weather.main}</h2>
-                            <h2>Current Temperature: {weather.temp}°C</h2>
-                            <h2>Feels like: {weather.feels_like}°C</h2>
+                            <h2>{weatherFiveDay[0].weather[0].main}</h2>
+                            <h2>Current Temperature: {weatherFiveDay[0].main.temp}°C</h2>
+                            <h2>Feels like: {weatherFiveDay[0].main.feels_like}°C</h2>
                         </Grid>
                         <Grid item xs={1}></Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <h2>Day1</h2>
+                    <WeatherItem key="1" id={weatherFiveDay[1].weather[0].id} temp={weatherFiveDay[1].main.temp} main={weatherFiveDay[1].weather[0].main}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <h2>Day2</h2>
+                    <WeatherItem key="2" id={weatherFiveDay[2].weather[0].id} temp={weatherFiveDay[2].main.temp} main={weatherFiveDay[2].weather[0].main}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <h2>Day3</h2>
+                    <WeatherItem key="3" id={weatherFiveDay[3].weather[0].id} temp={weatherFiveDay[3].main.temp} main={weatherFiveDay[3].weather[0].main}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <h2>Day4</h2>
+                    <WeatherItem key="4" id={weatherFiveDay[4].weather[0].id} temp={weatherFiveDay[4].main.temp} main={weatherFiveDay[4].weather[0].main}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <h2>Day6</h2>
+                    <WeatherItem key="5" id={weatherFiveDay[5].weather[0].id} temp={weatherFiveDay[5].main.temp} main={weatherFiveDay[5].weather[0].main}/>
                 </Grid>
             </Grid>
         </div>
