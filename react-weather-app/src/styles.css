@@ -1,5 +1,6 @@
 body {
-    background-color: #ccd5ae; 
+    background: rgb(204,213,174);
+    background: linear-gradient(125deg, rgba(204,213,174,1) 62%, rgba(233,237,201,1) 100%);
 }
 
 .app {
@@ -20,8 +21,14 @@ body {
     margin: 20px;
     display: flex;
     justify-content: center;
-    background-color: #d4a373;
     color: #FEFAE0;
+    background: #D4A373;
     border-radius: 60px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+a {
+    color: #FEFAE0;
+    /* remove underline */
+    text-decoration: none;
 }

@@ -11,11 +11,28 @@ export default function WeatherUI({ zip }) {
     // weather const { id, main, feels_like, temp }
     // console.log(location.lon)
     const [weatherFiveDay, setWeatherFiveDay] = useState([]);
+    const [nextFiveDays, setNextFiveDays] = useState([]); 
     // const [weather, setWeather] = useState({ id: 800, main: "", feels_like: 0, temp: 0 });
     const LOCATIONURL = `https://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${API_KEY}`;
     const WEATHERURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`;
 
     const ICONCOLOR = "#fefae0";
+
+    useEffect(() => {
+        getDates();
+    }, []);
+
+    const getDates = () => {
+        const dayOfWeek = new Date().toLocaleDateString('en-US', { weekday: 'short' });
+        const shortDayOfWeek = dayOfWeek.slice(0, 3);
+        const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const startIdx = daysOfWeek.indexOf(shortDayOfWeek);
+        const nextFiveDays = [];
+        for (let i = startIdx + 1; i <= startIdx + 5; i++) {
+          nextFiveDays.push(daysOfWeek[i % 7]);
+        }
+        setNextFiveDays(nextFiveDays);
+    }
 
     useEffect(() => {
         fetch(WEATHERURL)
@@ -89,7 +106,7 @@ export default function WeatherUI({ zip }) {
                             {getIconFromWeatherId(verifyWeatherData(0).id)}
                         </Grid>
                         <Grid item xs={6}>
-                            <h2>{verifyWeatherData(0).main}</h2>
+                            <h2>Today: {verifyWeatherData(0).main}</h2>
                             <h2>Current Temperature: {verifyWeatherData(0).temp}°C</h2>
                             <h2>Feels like: {verifyWeatherData(0).feels_like}°C</h2>
                         </Grid>
@@ -97,19 +114,19 @@ export default function WeatherUI({ zip }) {
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="1" id={verifyWeatherData(1).id} temp={verifyWeatherData(1).temp} main={verifyWeatherData(1).main}/>
+                    <WeatherItem key="1" id={verifyWeatherData(1).id} temp={verifyWeatherData(1).temp} main={verifyWeatherData(1).main} day={nextFiveDays[0]}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="2" id={verifyWeatherData(2).id} temp={verifyWeatherData(2).temp} main={verifyWeatherData(2).main}/>
+                    <WeatherItem key="2" id={verifyWeatherData(2).id} temp={verifyWeatherData(2).temp} main={verifyWeatherData(2).main} day={nextFiveDays[1]}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="3" id={verifyWeatherData(3).id} temp={verifyWeatherData(3).temp} main={verifyWeatherData(3).main}/>
+                    <WeatherItem key="3" id={verifyWeatherData(3).id} temp={verifyWeatherData(3).temp} main={verifyWeatherData(3).main} day={nextFiveDays[2]}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="4" id={verifyWeatherData(4).id} temp={verifyWeatherData(4).temp} main={verifyWeatherData(4).main}/>
+                    <WeatherItem key="4" id={verifyWeatherData(4).id} temp={verifyWeatherData(4).temp} main={verifyWeatherData(4).main} day={nextFiveDays[3]}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <WeatherItem key="5" id={verifyWeatherData(5).id} temp={verifyWeatherData(5).temp} main={verifyWeatherData(5).main}/>
+                    <WeatherItem key="5" id={verifyWeatherData(5).id} temp={verifyWeatherData(5).temp} main={verifyWeatherData(5).main} day={nextFiveDays[4]}/>
                 </Grid>
             </Grid>
         </div>

@@ -4,7 +4,7 @@ import './styles.css';
 import { WiCloudyGusts, WiDaySnow, WiCloudy, WiDaySunny, WiDayShowers, WiDayRain, WiDayThunderstorm } from 'weather-icons-react';
 import { useState } from "react";
 
-export default function WeatherItem({ key, id, temp, main }) {
+export default function WeatherItem({ key, id, temp, main, day }) {
     const ICONCOLOR = "#fefae0";
 
     const getIconFromWeatherId = (weatherId) => {
@@ -59,8 +59,8 @@ export default function WeatherItem({ key, id, temp, main }) {
                     {getIconFromWeatherId(id)}
                 </Grid>
                 <Grid item xs={6}>
-                    <h3>{getConditon(main)}</h3>
-                    <h3>{getTemp(temp)}°C</h3>
+                    <h3>{day}: {getConditon(main)}</h3>
+                    <h3>Temp: {getTemp(temp)}°C</h3>
                 </Grid>
                     <Grid item xs={1}></Grid>
             </Grid>
